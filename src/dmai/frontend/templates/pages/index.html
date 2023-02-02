@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'frameworks/bootstrap/dist/css/bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'frameworks/bootstrap/dist/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'frameworks/front-awesome/css/front-awesome.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="container-fluid">
+
+<main>
+ <div class="row" style="margin-top:200px">
+ 	<div class="col-md-10 col-md-offset-1">
+ 		        <div class="well bg-info" >
+            <p class="h2 text-center text-primary">NEXT CUSTOMER PURCHASE PREDICTOR</p>
+        </div>
+        <div class="form-group">
+           <div class="panel panel-primary">
+              <div class="panel-heading">
+                  <p class="h4 text-center">*upload json, excel, or csv file.</p>
+              </div>
+               <div class="panel-body">
+
+                   <div class="form-group">
+
+               <form role="form" method="POST" action="{% url 'backend:predict' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                   <div class="row">
+                       <div class="col-md-6 col-md-offset-1"><br>
+                        {{ data_form.filename }}
+                           <!-- <input type="file" name="file" class="form-control"> -->
+                       </div><br>
+                       <div class="col-md-4 col-sm-6">
+                           <button class="btn btn-primary" type="submit">Predict</button>
+                           <a class="btn btn-success" href="{% url 'backend:inference-api' %}">API Endpoints</a>
+                           <a class="btn btn-warning" href="{% url 'frontend:index' %}">Reset</a>
+                       </div>
+                       <div class="col-md-12">
+                        <hr>
+                        {% if format_message %}
+                           <p class="text-center text-danger h4">{{ format_message }}</p>
+                        {% endif %}
+                       </div>
+                       <div class="col-md-12">
+                        {% if inference_label == 1 %}
+                        <hr>
+                        <p class="text-center text-success h4">{{ inference_text }}</p>
+                        {% endif %}
+                        {% if inference_label == 0 %}
+                        <hr>
+                        <p class="text-center text-warning h4">{{ inference_text }}</p>
+                        {% endif %}
+                        {% if inference_label == -1 %}
+                        <hr>
+                        <p class="text-center text-danger h4">Unpredictable</p>
+                        {% endif %}
+                    </div>
+                   </div>
+               </form>
+               </div>
+
+          </div>
+        </div>
+ 	</div>
+ </div>
+</main>
+</div>
+</body>
+</html>
